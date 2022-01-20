@@ -66,7 +66,7 @@ public class PersonController {
             personRepository.deleteById(id);
             return ResponseEntity.ok().build();
         } else {
-            log.info("Not delete Person id");
+            log.error("Not delete Person id");
             return ResponseEntity.notFound().build();
         }
     }

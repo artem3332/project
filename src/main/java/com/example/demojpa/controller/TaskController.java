@@ -88,7 +88,7 @@ public class TaskController {
             tasksRepository.deleteById(id);
             return ResponseEntity.ok().build();
         } else {
-            log.info("Not Delete Task id");
+            log.error("Not Delete Task id");
             return ResponseEntity.notFound().build();
         }
     }
