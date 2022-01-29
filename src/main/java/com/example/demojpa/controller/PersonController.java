@@ -1,13 +1,11 @@
 package com.example.demojpa.controller;
 
-import com.example.demojpa.exception.PersonAlreadyExists;
-import com.example.demojpa.request.CreateRequestPerson;
 import com.example.demojpa.entity.Person;
-import com.example.demojpa.repository.PersonRepository;
+import com.example.demojpa.exception.BusinessException;
+import com.example.demojpa.request.CreateRequestPerson;
 import com.example.demojpa.service.PersonService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,65 +18,44 @@ import java.util.stream.Stream;
 public class PersonController {
 
     @Autowired
-    private PersonService personserv;
+    private PersonService personService;
 
-    @Autowired
-    private PersonRepository personRepository;
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Person> get(@PathVariable Long id)
+    @PostMapping("/create")
+    public ResponseEntity<?> create(@RequestBody CreateRequestPerson p) throws BusinessException
     {
-        log.info("Get Person id");
-        return ResponseEntity.ok(personRepository.findById(id).get());
+        log.info("Create person");
+        personService.create(p);
+        return ResponseEntity.ok("Пользователь успешно создан!");
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Person> get(@PathVariable Long id)throws BusinessException
+    {
+        log.info("Get person id");
+        return ResponseEntity.ok(personService.get(id));
+    }
 
     @GetMapping("/")
     public ResponseEntity<List<Person>> all()
     {
-        log.info("All Person");
-        return ResponseEntity.ok(personRepository.findAll());
+        log.info("All person");
+        return ResponseEntity.ok(personService.all());
     }
-
-
-    @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody CreateRequestPerson p) {
-
-        try {
-            log.info("Create Person");
-            personserv.create(p);
-            return ResponseEntity.ok("Пользователь успешно создан!");
-        } catch (PersonAlreadyExists ex) {
-            log.error("Person already exists",ex);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Пользователь уже создан!");
-        } catch (Exception e) {
-            log.error("DB Exception",e);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Пользователь не создан!");
-        }
-    }
-
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-
-        if (personRepository.existsById(id)) {
-            log.info("Delete Person id");
-            personRepository.deleteById(id);
-            return ResponseEntity.ok().build();
-        } else {
-            log.error("Not delete Person id");
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<?> delete(@PathVariable Long id) throws BusinessException
+    {
+        log.info("Delete person");
+        personService.delete(id);
+        return ResponseEntity.ok("Пользователь успешно удалён!");
     }
-
 
     @GetMapping("/conclusion")
     public Stream<String> conclus()
     {
         log.info("Conclusion");
-        return personserv.conclusion();
+        return personService.conclusion();
     }
-
 
 }
 

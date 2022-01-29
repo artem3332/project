@@ -19,9 +19,11 @@ public class Person {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private List<Task> todos;
+    private List<Purpose> purposes;
 
     private String email;
+
+
 
     public Person(String login, String parol,String email)
     {
