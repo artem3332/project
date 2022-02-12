@@ -2,7 +2,6 @@ package com.example.demojpa.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.SortNatural;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -42,10 +41,10 @@ public class Purpose
 
     private String email;
 
-    public Purpose(String Purpose,int importance,int days)
+    public Purpose(String Purpose,LocalDateTime time)
     {
         this.purpose = Purpose;
-        this.importance=importance;
+        this.time=time;
     }
 
     public enum Status

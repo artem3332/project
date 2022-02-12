@@ -1,14 +1,16 @@
 package com.example.demojpa.service;
 
 import com.example.demojpa.entity.Person;
+import com.example.demojpa.entity.Purpose;
 import com.example.demojpa.exception.BusinessException;
 import com.example.demojpa.exception.ErrorCode;
 import com.example.demojpa.repository.PersonRepository;
-import com.example.demojpa.request.CreateRequestPerson;
+import com.example.demojpa.request.PersonRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -19,19 +21,41 @@ public class PersonService {
     @Autowired
     private PersonRepository personRepository;
 
-    public void create(CreateRequestPerson request) throws BusinessException {
+    @Autowired
+    private EncryptedService encryptedService;
+
+    public void create(PersonRequest request) throws BusinessException {
 
         if (personRepository.findPerson(request.getLogin()).isPresent()) {
             throw new BusinessException(ErrorCode.PERSON_ALREADY_EXISTS, HttpStatus.BAD_REQUEST);
         }
+        Person per;
 
-        Person per = new Person(request.getLogin(), request.getParol(), request.getEmail());
+        if(request.getPassword()!=null) {
+             per = new Person(request.getLogin(), encryptedService.encrypted(request.getPassword()), request.getEmail(), request.getVkid());
+        }
+        else{
+             per = new Person(request.getLogin(), null, request.getEmail(), request.getVkid());
+
+        }
         personRepository.save(per);
     }
 
-    public Person get(Long id) throws BusinessException {
-        return personRepository.findById(id).orElseThrow(() -> new BusinessException(ErrorCode.PERSON_NOT_FOUND, HttpStatus.NOT_FOUND));
+
+
+
+    public Person get(Integer vkid) throws BusinessException {
+        return personRepository.findPersonByVkid(vkid).orElseThrow(() -> new BusinessException(ErrorCode.PERSON_NOT_FOUND, HttpStatus.NOT_FOUND));
     }
+
+
+    public List<Purpose> getByPersonVKIdPurpose(Integer vkid) throws BusinessException {
+        return personRepository.findPersonByVkid(vkid)
+                .orElseThrow(() -> new BusinessException(ErrorCode.PERSON_NOT_FOUND, HttpStatus.NOT_FOUND))
+                .getPurposes();
+    }
+
+
 
     public List<Person> all() {
         return personRepository.findAll();
@@ -52,6 +76,18 @@ public class PersonService {
                 .filter(p -> p.getPurposes().size() >= 1)
                 .filter(p -> p.getEmail().contains("@mail.ru"))
                 .map(Person::getLogin);
+
+    }
+
+    public void  ggggg(Long id)
+    {
+        List<Purpose> potok=new ArrayList<>();
+        potok.addAll(personRepository.findById(id).get().getPurposes());
+        potok.stream()
+                .flatMap(n-> n.getSubGoals().stream())
+                .filter(p-> p.getPurpose().length()>1)
+                .distinct()
+                .forEach(k-> System.out.println(k.getPurpose()));
 
     }
 

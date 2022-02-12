@@ -13,6 +13,7 @@ public enum ErrorCode
     COMMENT_NOT_FOUND("Comment not found"),
     SUBGOAL_ALREADY_EXISTS("Subgoal already exists"),
     SUBGOAL_NOT_FOUND("Subgoal not found");
+
     final String message;
 
     public String getMessage() {

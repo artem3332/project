@@ -1,13 +1,14 @@
 package com.example.demojpa.request;
 
-
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
-public class CreateRequestComment
+public class PurposeRequest
 {
-    private String comment;
+
+    private final String purpose;
+    private final LocalDateTime time;
 
 }

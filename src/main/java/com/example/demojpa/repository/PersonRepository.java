@@ -11,7 +11,9 @@ import java.util.Optional;
 public interface PersonRepository extends JpaRepository<Person, Long>
 {
 
-    @Query("SELECT m from Person m where m.login = :login")
+    @Query("SELECT m from Person m where m.login = :login ")
     Optional<Person> findPerson(String login);
+
+    Optional<Person> findPersonByVkid(Integer vkid);
 
 }

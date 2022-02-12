@@ -2,6 +2,7 @@ package com.example.demojpa.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -14,10 +15,13 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String login;
-    private String parol;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    private String login;
+    private String password;
+
+    private Integer vkid;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private List<Purpose> purposes;
 
@@ -25,11 +29,12 @@ public class Person {
 
 
 
-    public Person(String login, String parol,String email)
+    public Person(String login, String parol,String email,Integer vkid)
     {
         this.login = login;
-        this.parol = parol;
+        this.password = parol;
         this.email=email;
+        this.vkid =vkid;
     }
 
 }

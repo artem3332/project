@@ -3,7 +3,6 @@ package com.example.demojpa.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.dialect.Database;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

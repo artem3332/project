@@ -4,9 +4,8 @@ package com.example.demojpa.controller;
 import com.example.demojpa.entity.Comment;
 import com.example.demojpa.entity.Purpose;
 import com.example.demojpa.exception.BusinessException;
-import com.example.demojpa.request.CreateRequestComment;
-import com.example.demojpa.request.CreateRequestPurpose;
-import com.example.demojpa.service.DefaultEmailService;
+import com.example.demojpa.request.CommentRequest;
+import com.example.demojpa.request.PurposeRequest;
 import com.example.demojpa.service.PurposeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,26 +22,36 @@ public class PurposeController {
     @Autowired
     private PurposeService purposeService;
 
+
+    @PostMapping("/createBot/{vkid}")
+    public ResponseEntity<?> createPurposeBot(@RequestBody PurposeRequest Purpose, @PathVariable Integer vkid) throws BusinessException
+    {
+        log.info("Create bot purpose");
+        purposeService.creatBotPurpose(Purpose , vkid);
+        return ResponseEntity.ok("Цель успешно создана!");
+    }
+
+
     @PostMapping("/create")
-    public ResponseEntity<?> createPurpose(@RequestBody CreateRequestPurpose Purpose, @RequestParam Long userid) throws BusinessException
+    public ResponseEntity<?> createPurpose(@RequestBody PurposeRequest Purpose, @PathVariable Long userid) throws BusinessException
     {
         log.info("Create purpose");
         purposeService.creatPurpose(Purpose, userid);
         return ResponseEntity.ok("Цель успешно создана!");
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity<Purpose> getPurpose(@PathVariable Long id) throws BusinessException
     {
         log.info("Get purpose id");
         return ResponseEntity.ok(purposeService.getPurpose(id));
     }
 
-    @GetMapping("/")
-    public ResponseEntity<List<Purpose>> allPurpose()
+    @GetMapping("/{id}")
+    public ResponseEntity<List<Purpose>> allPurpose(@PathVariable Long id)
     {
         log.info("All purposes");
-        return ResponseEntity.ok(purposeService.allPurpose());
+        return ResponseEntity.ok(purposeService.allPurpose(id));
     }
 
     @DeleteMapping("/{id}")
@@ -54,7 +63,7 @@ public class PurposeController {
     }
 
     @PostMapping("/comment/create")
-    public ResponseEntity<?> addComment(@RequestBody CreateRequestComment comment,@RequestParam Long purposeid) throws BusinessException
+    public ResponseEntity<?> addComment(@RequestBody CommentRequest comment, @RequestParam Long purposeid) throws BusinessException
     {
         log.info("Add comment");
         purposeService.addComment(comment,purposeid);
@@ -77,7 +86,7 @@ public class PurposeController {
     }
 
     @PostMapping("/comment/change/{id}")
-    public ResponseEntity<?> toChangeComment(@RequestBody CreateRequestComment comment,@PathVariable Long id) throws BusinessException
+    public ResponseEntity<?> toChangeComment(@RequestBody CommentRequest comment, @PathVariable Long id) throws BusinessException
     {
         log.info("To change comment");
         purposeService.toChangeComment(comment,id);
@@ -85,7 +94,7 @@ public class PurposeController {
     }
 
     @PostMapping("/subgoals/create")
-    public ResponseEntity<?> addSubGoal(@RequestBody CreateRequestPurpose subgoal,@RequestParam Long id) throws BusinessException
+    public ResponseEntity<?> addSubGoal(@RequestBody PurposeRequest subgoal, @RequestParam Long id) throws BusinessException
     {
         log.info("Add sub-goal");
         purposeService.addSubGoal(subgoal,id);
@@ -106,7 +115,6 @@ public class PurposeController {
 
 
 
-// валидация , List запросов  , планировщик по времени .
 
 
 
