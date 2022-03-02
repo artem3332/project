@@ -9,6 +9,7 @@ import com.example.demojpa.request.PersonRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,10 @@ public class PersonService {
 
     @Autowired
     private EncryptedService encryptedService;
+
+    @Autowired
+    private PurposeService purposeService;
+
 
     public void create(PersonRequest request) throws BusinessException {
 
@@ -61,7 +66,7 @@ public class PersonService {
         return personRepository.findAll();
     }
 
-    public void delete(Long id) throws BusinessException {
+    public void deleteId(Long id) throws BusinessException {
 
         if (personRepository.existsById(id)) {
             personRepository.deleteById(id);
@@ -69,6 +74,17 @@ public class PersonService {
             throw new BusinessException(ErrorCode.PERSON_NOT_FOUND, HttpStatus.NOT_FOUND);
         }
 
+    }
+
+    @Transactional
+    public void deleteVkId(Integer vkid) throws BusinessException {
+        personRepository.findPersonByVkid(vkid)
+                .ifPresentOrElse(p -> {
+                    purposeService.deleteByUserId(p.getId());
+                    personRepository.deleteById(p.getId());
+                }, () -> {
+                    throw new BusinessException(ErrorCode.PERSON_NOT_FOUND, HttpStatus.NOT_FOUND);
+                });
     }
 
     public Stream<String> conclusion() {

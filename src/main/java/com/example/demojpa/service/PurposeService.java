@@ -9,6 +9,7 @@ import com.example.demojpa.repository.PersonRepository;
 import com.example.demojpa.repository.PurposeRepository;
 import com.example.demojpa.request.CommentRequest;
 import com.example.demojpa.request.PurposeRequest;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -95,17 +96,13 @@ public class PurposeService {
         return personRepository.getById(id).getPurposes();
     }
 
-    public void deletePurpose(Long id) throws BusinessException
+
+    public void deleteByUserId(Long id)
     {
-        if(purposeRepository.existsById(id))
-        {
-            purposeRepository.deleteById(id);
-        }
-        else
-        {
-            throw  new BusinessException(ErrorCode.PURPOSE_NOT_FOUND,HttpStatus.NOT_FOUND);
-        }
+      purposeRepository.deleteByUserId(id);
     }
+
+
 
     public void addComment(CommentRequest n, Long id) throws BusinessException
     {

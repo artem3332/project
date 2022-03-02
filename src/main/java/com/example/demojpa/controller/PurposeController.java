@@ -58,7 +58,7 @@ public class PurposeController {
     public ResponseEntity<?> deletePurpose(@PathVariable Long id) throws BusinessException
     {
         log.info("Delete purpose");
-        purposeService.deletePurpose(id);
+        purposeService.deleteByUserId(id);
         return ResponseEntity.ok("Цель успешно удалена!");
     }
 

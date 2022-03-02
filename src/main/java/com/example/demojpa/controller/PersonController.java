@@ -52,13 +52,23 @@ public class PersonController {
         return ResponseEntity.ok(personService.all());
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) throws BusinessException
+    @DeleteMapping("/delete1/{id}")
+    public ResponseEntity<?> deleteid(@PathVariable Long id) throws BusinessException
     {
         log.info("Delete person");
-        personService.delete(id);
+        personService.deleteId(id);
         return ResponseEntity.ok("Пользователь успешно удалён!");
     }
+
+
+    @DeleteMapping("/delete2/{vkid}")
+    public ResponseEntity<?> deletevkid(@PathVariable Integer vkid) throws BusinessException
+    {
+        log.info("Delete person");
+        personService.deleteVkId(vkid);
+        return ResponseEntity.ok("Пользователь успешно удалён!");
+    }
+
 
     @GetMapping("/conclusion")
     public Stream<String> conclus()
@@ -68,16 +78,3 @@ public class PersonController {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

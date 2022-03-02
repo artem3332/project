@@ -47,7 +47,8 @@ public class StatusScheduler
             for (Purpose purpose: person.getPurposes())
             {
                 if (purpose.getTime().getHour()==LocalDateTime.now().getHour()
-                        &&  purpose.getTime().getMinute()==LocalDateTime.now().getMinute() )
+                        &&  purpose.getTime().getMinute()==LocalDateTime.now().getMinute()
+                        &&  purpose.getTime().getDayOfMonth()==LocalDateTime.now().getDayOfMonth())
                 {
                     RestTemplate restTemplate = new RestTemplate();
                     PurposeRequest purposeRequest=new PurposeRequest(purpose.getPurpose(),purpose.getTime());
