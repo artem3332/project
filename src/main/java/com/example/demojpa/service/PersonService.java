@@ -87,24 +87,6 @@ public class PersonService {
                 });
     }
 
-    public Stream<String> conclusion() {
-        return personRepository.findAll().stream()
-                .filter(p -> p.getPurposes().size() >= 1)
-                .filter(p -> p.getEmail().contains("@mail.ru"))
-                .map(Person::getLogin);
 
-    }
-
-    public void  ggggg(Long id)
-    {
-        List<Purpose> potok=new ArrayList<>();
-        potok.addAll(personRepository.findById(id).get().getPurposes());
-        potok.stream()
-                .flatMap(n-> n.getSubGoals().stream())
-                .filter(p-> p.getPurpose().length()>1)
-                .distinct()
-                .forEach(k-> System.out.println(k.getPurpose()));
-
-    }
 
 }

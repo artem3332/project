@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Stream;
 
 @Slf4j
 @RestController
@@ -70,11 +69,5 @@ public class PersonController {
     }
 
 
-    @GetMapping("/conclusion")
-    public Stream<String> conclus()
-    {
-        log.info("Conclusion");
-        return personService.conclusion();
-    }
 
 }

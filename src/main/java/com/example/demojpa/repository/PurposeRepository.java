@@ -18,4 +18,10 @@ public interface PurposeRepository extends JpaRepository<Purpose,Long>
 
     @Modifying
     void deleteByUserId(Long userId);
+
+
+    @Query("DELETE FROM Purpose m WHERE  m.purpose=:purpose and m.userId=:userId")
+    void deletePurposeByName(String purpose,Long userId);
+
+
 }

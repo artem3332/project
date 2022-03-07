@@ -102,6 +102,11 @@ public class PurposeService {
       purposeRepository.deleteByUserId(id);
     }
 
+    public void deletePurposeByName(String purpose,Long userId)
+    {
+        purposeRepository.deletePurposeByName(purpose,userId);
+    }
+
 
 
     public void addComment(CommentRequest n, Long id) throws BusinessException

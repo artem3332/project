@@ -57,10 +57,20 @@ public class PurposeController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePurpose(@PathVariable Long id) throws BusinessException
     {
-        log.info("Delete purpose");
+        log.info("Delete purposes");
         purposeService.deleteByUserId(id);
         return ResponseEntity.ok("Цель успешно удалена!");
     }
+
+    @DeleteMapping("")
+    public ResponseEntity<?> deletePurposeByName(@RequestBody String purpose,@RequestBody Long userId)
+    {
+        log.info("Delete purpose");
+        purposeService.deletePurposeByName(purpose,userId);
+        return ResponseEntity.ok("Цель успешно удалена!");
+    }
+
+
 
     @PostMapping("/comment/create")
     public ResponseEntity<?> addComment(@RequestBody CommentRequest comment, @RequestParam Long purposeid) throws BusinessException
