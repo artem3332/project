@@ -65,3 +65,8 @@
 2022-03-12 12:47:29.104  INFO 9192 --- [http-nio-8086-exec-8] c.e.demojpa.controller.PersonController  : Find by vkid
 2022-03-12 12:47:29.114  INFO 9192 --- [http-nio-8086-exec-9] c.e.demojpa.controller.PersonController  : Create person
 2022-03-12 12:48:12.021  INFO 9192 --- [scheduling-1] c.e.demojpa.scheduler.StatusScheduler    : StatusScheduler is running
+2022-03-12 12:49:12.021  INFO 9192 --- [scheduling-1] c.e.demojpa.scheduler.StatusScheduler    : StatusScheduler is running
+2022-03-12 12:50:12.022  INFO 9192 --- [scheduling-1] c.e.demojpa.scheduler.StatusScheduler    : StatusScheduler is running
+2022-03-12 12:51:12.021  INFO 9192 --- [scheduling-1] c.e.demojpa.scheduler.StatusScheduler    : StatusScheduler is running
+2022-03-12 12:52:12.021  INFO 9192 --- [scheduling-1] c.e.demojpa.scheduler.StatusScheduler    : StatusScheduler is running
+2022-03-12 12:53:12.020  INFO 9192 --- [scheduling-1] c.e.demojpa.scheduler.StatusScheduler    : StatusScheduler is running
