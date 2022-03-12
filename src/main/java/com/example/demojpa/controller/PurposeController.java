@@ -4,7 +4,9 @@ package com.example.demojpa.controller;
 import com.example.demojpa.entity.Comment;
 import com.example.demojpa.entity.Purpose;
 import com.example.demojpa.exception.BusinessException;
+import com.example.demojpa.request.ChangePurposeRequest;
 import com.example.demojpa.request.CommentRequest;
+import com.example.demojpa.request.DeletePurposeRequest;
 import com.example.demojpa.request.PurposeRequest;
 import com.example.demojpa.service.PurposeService;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -24,19 +27,19 @@ public class PurposeController {
 
 
     @PostMapping("/createBot/{vkid}")
-    public ResponseEntity<?> createPurposeBot(@RequestBody PurposeRequest Purpose, @PathVariable Integer vkid) throws BusinessException
+    public ResponseEntity<?> createPurposeBot(@RequestBody PurposeRequest purpose,@PathVariable Integer vkid) throws BusinessException
     {
         log.info("Create bot purpose");
-        purposeService.creatBotPurpose(Purpose , vkid);
+        purposeService.creatBotPurpose(purpose,vkid);
         return ResponseEntity.ok("Цель успешно создана!");
     }
 
 
     @PostMapping("/create")
-    public ResponseEntity<?> createPurpose(@RequestBody PurposeRequest Purpose, @PathVariable Long userid) throws BusinessException
+    public ResponseEntity<?> createPurpose(@RequestBody PurposeRequest purpose, @PathVariable Long userid) throws BusinessException
     {
         log.info("Create purpose");
-        purposeService.creatPurpose(Purpose, userid);
+        purposeService.creatPurpose(purpose, userid);
         return ResponseEntity.ok("Цель успешно создана!");
     }
 
@@ -62,11 +65,11 @@ public class PurposeController {
         return ResponseEntity.ok("Цель успешно удалена!");
     }
 
-    @DeleteMapping("")
-    public ResponseEntity<?> deletePurposeByName(@RequestBody String purpose,@RequestBody Long userId)
+    @DeleteMapping
+    public ResponseEntity<?> deletePurposeByName(@RequestBody @Valid DeletePurposeRequest deletePurposeRequest)
     {
         log.info("Delete purpose");
-        purposeService.deletePurposeByName(purpose,userId);
+        purposeService.deletePurposeByName(deletePurposeRequest);
         return ResponseEntity.ok("Цель успешно удалена!");
     }
 
@@ -118,6 +121,28 @@ public class PurposeController {
         purposeService.toChangeStatusSubGoal(id);
         return ResponseEntity.ok("Задача успешно выполнена");
     }
+
+    @PutMapping("/changestatus")
+    public  ResponseEntity<?> toChangeStatusPurpose(@Valid @RequestBody ChangePurposeRequest changePurposeRequest)
+    {
+        log.info("To change status purpose");
+        purposeService.toChangeStatusPurpose(changePurposeRequest);
+        return ResponseEntity.ok("Статус успешно изменён на Completed");
+
+
+    }
+
+    @PutMapping("/changetime")
+    public  ResponseEntity<?> toChangeTimePurpose(@Valid @RequestBody ChangePurposeRequest changePurposeRequest)
+    {
+        log.info("To change time purpose");
+        purposeService.toChangeTimePurpose(changePurposeRequest);
+        return ResponseEntity.ok("Время увеличено на 10 минут");
+
+
+    }
+
+
 
 
 

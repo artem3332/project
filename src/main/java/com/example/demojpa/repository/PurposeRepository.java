@@ -17,9 +17,19 @@ public interface PurposeRepository extends JpaRepository<Purpose,Long>
     Optional<Purpose> findPurpose(String purpose, Long userId);
 
     @Modifying
+    Optional<Purpose> findPurposeByUserId(Long userId);
+
+
+    @Query(value="SELECT * FROM Purpose t WHERE t.purpose=:purpose",nativeQuery = true)
+    Optional<Purpose> findPurposeByPurpose(String purpose);
+
+
+
+    @Modifying
     void deleteByUserId(Long userId);
 
 
+    @Modifying
     @Query("DELETE FROM Purpose m WHERE  m.purpose=:purpose and m.userId=:userId")
     void deletePurposeByName(String purpose,Long userId);
 

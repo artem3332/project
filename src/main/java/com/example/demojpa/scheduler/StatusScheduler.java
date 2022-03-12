@@ -2,6 +2,7 @@ package com.example.demojpa.scheduler;
 
 import com.example.demojpa.entity.Person;
 import com.example.demojpa.entity.Purpose;
+import com.example.demojpa.entity.Status;
 import com.example.demojpa.repository.PersonRepository;
 import com.example.demojpa.repository.PurposeRepository;
 import com.example.demojpa.request.PurposeRequest;
@@ -48,12 +49,12 @@ public class StatusScheduler
             {
                 if (purpose.getTime().getHour()==LocalDateTime.now().getHour()
                         &&  purpose.getTime().getMinute()==LocalDateTime.now().getMinute()
-                        &&  purpose.getTime().getDayOfMonth()==LocalDateTime.now().getDayOfMonth())
+                        &&  purpose.getTime().getDayOfMonth()==LocalDateTime.now().getDayOfMonth()
+                        &&  purpose.getStatus()== Status.PROCESS)
                 {
                     RestTemplate restTemplate = new RestTemplate();
-                    PurposeRequest purposeRequest=new PurposeRequest(purpose.getPurpose(),purpose.getTime());
+                    PurposeRequest purposeRequest=new PurposeRequest(purpose.getPurpose(),purpose.getStatus(),purpose.getTime());
                     restTemplate.postForObject(url + person.getVkid(),purposeRequest,String.class);
-                    purposeRepository.delete(purpose);
 
 
 

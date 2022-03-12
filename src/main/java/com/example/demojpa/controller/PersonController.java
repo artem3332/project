@@ -4,6 +4,7 @@ import com.example.demojpa.entity.Person;
 import com.example.demojpa.entity.Purpose;
 import com.example.demojpa.exception.BusinessException;
 import com.example.demojpa.request.PersonRequest;
+import com.example.demojpa.request.PurposeRequest;
 import com.example.demojpa.service.PersonService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +68,7 @@ public class PersonController {
         personService.deleteVkId(vkid);
         return ResponseEntity.ok("Пользователь успешно удалён!");
     }
+
 
 
 

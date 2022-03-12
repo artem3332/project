@@ -21,6 +21,7 @@ public class Purpose
     @Column(name = "user_id")
     private Long userId;
 
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "purpose_id")
     private List<Comment> comments;
@@ -37,21 +38,16 @@ public class Purpose
 
     private int importance;
 
-    private int days;
+
 
     private String email;
 
-    public Purpose(String Purpose,LocalDateTime time)
+    public Purpose(String Purpose,Status status,LocalDateTime time)
     {
-        this.purpose = Purpose;
-        this.time=time;
-    }
 
-    public enum Status
-    {
-        COMPLETED,
-        FAILED,
-        PROCESS
+        this.purpose = Purpose;
+        this.status=status;
+        this.time=time;
     }
 
 }
