@@ -1,30 +1,41 @@
 package com.example.demojpa.controller;
 
+import com.example.demojpa.aop.Loggable;
 import com.example.demojpa.entity.Person;
 import com.example.demojpa.entity.Purpose;
 import com.example.demojpa.exception.BusinessException;
 import com.example.demojpa.request.PersonRequest;
-import com.example.demojpa.request.PurposeRequest;
 import com.example.demojpa.service.PersonService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 import java.util.List;
 
+@Scope("singleton")
 @Slf4j
 @RestController
 @RequestMapping("/persons")
 public class PersonController {
 
+
+    @PostConstruct
+    public void gg(){
+        System.out.println("Ку");
+    }
+
     @Autowired
     private PersonService personService;
 
+    @Loggable
     @PostMapping("/create")
     public ResponseEntity<?> create(@Valid @RequestBody PersonRequest p) throws BusinessException
     {
+
         log.info("Create person");
         personService.create(p);
         return ResponseEntity.ok("Пользователь успешно создан!");
