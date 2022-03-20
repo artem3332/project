@@ -23,11 +23,6 @@ import java.util.List;
 public class PersonController {
 
 
-    @PostConstruct
-    public void gg(){
-        System.out.println("Ку");
-    }
-
     @Autowired
     private PersonService personService;
 
@@ -41,6 +36,7 @@ public class PersonController {
         return ResponseEntity.ok("Пользователь успешно создан!");
     }
 
+    @Loggable
     @GetMapping("/purposeAll/{vkid}")
     public  ResponseEntity<List<Purpose>> getByPersonVKIdPurposes(@PathVariable Integer vkid) throws BusinessException {
         log.info("All Purpose vkid");
@@ -49,6 +45,7 @@ public class PersonController {
 
 
 
+    @Loggable
     @GetMapping("/{vkid}")
     public ResponseEntity<Person> get(@PathVariable Integer vkid)throws BusinessException
     {
@@ -72,6 +69,7 @@ public class PersonController {
     }
 
 
+    @Loggable
     @DeleteMapping("/delete2/{vkid}")
     public ResponseEntity<?> deletevkid(@PathVariable Integer vkid) throws BusinessException
     {

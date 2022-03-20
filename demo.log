@@ -927,3 +927,6 @@
 2022-03-19 13:03:42.212  INFO 23792 --- [scheduling-1] c.e.demojpa.scheduler.StatusScheduler    : StatusScheduler is running
 2022-03-19 13:04:42.211  INFO 23792 --- [scheduling-1] c.e.demojpa.scheduler.StatusScheduler    : StatusScheduler is running
 2022-03-19 13:05:42.212  INFO 23792 --- [scheduling-1] c.e.demojpa.scheduler.StatusScheduler    : StatusScheduler is running
+2022-03-19 13:06:27.076  INFO 23792 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-03-19 13:06:27.763  INFO 23792 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-03-19 13:06:27.845  INFO 23792 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

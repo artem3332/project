@@ -1,6 +1,7 @@
 package com.example.demojpa.controller;
 
 
+import com.example.demojpa.aop.Loggable;
 import com.example.demojpa.entity.Comment;
 import com.example.demojpa.entity.Purpose;
 import com.example.demojpa.exception.BusinessException;
@@ -26,6 +27,7 @@ public class PurposeController {
     private PurposeService purposeService;
 
 
+    @Loggable
     @PostMapping("/createBot/{vkid}")
     public ResponseEntity<?> createPurposeBot(@RequestBody PurposeRequest purpose,@PathVariable Integer vkid) throws BusinessException
     {
@@ -65,6 +67,7 @@ public class PurposeController {
         return ResponseEntity.ok("Цель успешно удалена!");
     }
 
+    @Loggable
     @DeleteMapping
     public ResponseEntity<?> deletePurposeByName(@RequestBody @Valid DeletePurposeRequest deletePurposeRequest)
     {
@@ -122,6 +125,7 @@ public class PurposeController {
         return ResponseEntity.ok("Задача успешно выполнена");
     }
 
+    @Loggable
     @PutMapping("/changestatus")
     public  ResponseEntity<?> toChangeStatusPurpose(@Valid @RequestBody ChangePurposeRequest changePurposeRequest)
     {
@@ -132,6 +136,7 @@ public class PurposeController {
 
     }
 
+    @Loggable
     @PutMapping("/changetime")
     public  ResponseEntity<?> toChangeTimePurpose(@Valid @RequestBody ChangePurposeRequest changePurposeRequest)
     {
