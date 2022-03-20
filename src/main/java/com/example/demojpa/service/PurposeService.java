@@ -35,9 +35,6 @@ public class PurposeService {
     @Autowired
     private CommentRepository commentRepository;
 
-    @Autowired
-    private EmailService emailService;
-
 
 
     public void creatBotPurpose(PurposeRequest requestPurpose,Integer vkid) throws BusinessException {
@@ -81,7 +78,6 @@ public class PurposeService {
             purpose.setTime(LocalDateTime.now());
             purpose.setEmail(personRepository.getById(userid).getEmail());
             purposeRepository.save(purpose);
-            //emailService.sendSimpleEmail(personRepository.getById(userid).getEmail(), "Purpose", "Цель успешно "+purpose.getPurpose() +" поставлена," + "на её выполнение вам"+purpose.getDays()+"дня");
         }
     }
 
@@ -200,7 +196,6 @@ public class PurposeService {
             subPurpose.setStatus(Status.PROCESS);
             mainPurpose.getSubGoals().add(subPurpose);
             purposeRepository.save(mainPurpose);
-            //emailService.sendSimpleEmail(subPurpose.getEmail(), "Sub goal", "Подзадача успешно "+subPurpose.getPurpose() +" поставлена," + "на её выполнение вам"+subPurpose.getDays()+"дня(дней)");
         }
 
         else
@@ -216,7 +211,6 @@ public class PurposeService {
             Purpose purpose = purposeRepository.getById(id);
             purpose.setStatus(Status.COMPLETED);
             purposeRepository.save(purpose);
-          //  emailService.sendSimpleEmail(purpose.getEmail(), "Completed", "Задача " + purpose.getPurpose() + " выполнена!");
         }
         else
         {

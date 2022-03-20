@@ -27,10 +27,13 @@ public class PersonService {
     @Autowired
     private PurposeService purposeService;
 
+//    @Autowired
+//    private PasswordEncoder passwordEncoder;
+
 
     public void create(PersonRequest request) throws BusinessException {
 
-        if (personRepository.findPerson(request.getLogin()).isPresent()) {
+        if (personRepository.findPerson(request.getLogin()).isPresent() || personRepository.findPersonByVkid(request.getVkid()).isPresent()) {
             throw new BusinessException(ErrorCode.PERSON_ALREADY_EXISTS, HttpStatus.BAD_REQUEST);
         }
         Person per;
