@@ -9,6 +9,7 @@ import com.example.demojpa.repository.PersonRepository;
 import com.example.demojpa.request.PersonRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,13 +28,11 @@ public class PersonService {
     @Autowired
     private PurposeService purposeService;
 
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
 
 
     public void create(PersonRequest request) throws BusinessException {
 
-        if (personRepository.findPerson(request.getLogin()).isPresent() || personRepository.findPersonByVkid(request.getVkid()).isPresent()) {
+        if (personRepository.findPerson(request.getLogin()).isPresent()) {
             throw new BusinessException(ErrorCode.PERSON_ALREADY_EXISTS, HttpStatus.BAD_REQUEST);
         }
         Person per;
@@ -42,7 +41,7 @@ public class PersonService {
              per = new Person(request.getLogin(), encryptedService.encrypted(request.getPassword()), request.getEmail(), request.getVkid());
         }
         else{
-             per = new Person(request.getLogin(), null, request.getEmail(), request.getVkid());
+             per = new Person(request.getLogin(),null, request.getEmail(), request.getVkid());
 
         }
         personRepository.save(per);

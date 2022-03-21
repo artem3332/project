@@ -38,8 +38,6 @@ public class Purpose
 
     private int importance;
 
-
-
     private String email;
 
     public Purpose(String Purpose,Status status,LocalDateTime time)

@@ -5,10 +5,12 @@ import com.example.demojpa.aop.Loggable;
 import com.example.demojpa.entity.Comment;
 import com.example.demojpa.entity.Purpose;
 import com.example.demojpa.exception.BusinessException;
+import com.example.demojpa.repository.PersonRepository;
 import com.example.demojpa.request.ChangePurposeRequest;
 import com.example.demojpa.request.CommentRequest;
 import com.example.demojpa.request.DeletePurposeRequest;
 import com.example.demojpa.request.PurposeRequest;
+import com.example.demojpa.service.DefaultEmailService;
 import com.example.demojpa.service.PurposeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -25,6 +28,12 @@ public class PurposeController {
 
     @Autowired
     private PurposeService purposeService;
+
+    @Autowired
+    private DefaultEmailService defaultEmailService;
+
+    @Autowired
+    private PersonRepository personRepository;
 
 
     @Loggable
@@ -37,11 +46,15 @@ public class PurposeController {
     }
 
 
-    @PostMapping("/create")
+    @PostMapping("/create/{userid}")
     public ResponseEntity<?> createPurpose(@RequestBody PurposeRequest purpose, @PathVariable Long userid) throws BusinessException
     {
         log.info("Create purpose");
         purposeService.creatPurpose(purpose, userid);
+        defaultEmailService.sendSimpleEmail(personRepository.getById(userid).getEmail(),
+                "Purpose", "Цель успешно "+purpose.getPurpose()
+                        + " поставлена," + "на её выполнение вам"+2 +"дня");
+
         return ResponseEntity.ok("Цель успешно создана!");
     }
 
