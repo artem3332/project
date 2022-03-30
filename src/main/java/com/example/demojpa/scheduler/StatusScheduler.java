@@ -1,11 +1,11 @@
 package com.example.demojpa.scheduler;
 
+import com.example.demojpa.entity.Notification;
 import com.example.demojpa.entity.Person;
-import com.example.demojpa.entity.Purpose;
 import com.example.demojpa.entity.Status;
 import com.example.demojpa.repository.PersonRepository;
-import com.example.demojpa.repository.PurposeRepository;
-import com.example.demojpa.request.PurposeRequest;
+import com.example.demojpa.repository.NotificationRepository;
+import com.example.demojpa.request.PostNotificationRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class StatusScheduler
 {
     @Autowired
-    PurposeRepository purposeRepository;
+    NotificationRepository notificationRepository;
 
     @Autowired
     PersonRepository personRepository;
@@ -35,7 +35,7 @@ public class StatusScheduler
     @Value("${status-scheduler.enabled}")
     private Boolean enabled;
 
-    @Scheduled(timeUnit = TimeUnit.MINUTES, fixedRateString = "${status-scheduler.period}")
+    @Scheduled(timeUnit = TimeUnit.SECONDS, fixedRateString = "${status-scheduler.period}")
     public void  updateStatus()
     {
         if (!enabled)
@@ -43,18 +43,19 @@ public class StatusScheduler
         log.info("StatusScheduler is running");
 
 
+
         for (Person person : personRepository.findAll())
         {
-            for (Purpose purpose: person.getPurposes())
+            for (Notification notification: person.getNotifications())
             {
-                if (purpose.getTime().getHour()==LocalDateTime.now().getHour()
-                        &&  purpose.getTime().getMinute()==LocalDateTime.now().getMinute()
-                        &&  purpose.getTime().getDayOfMonth()==LocalDateTime.now().getDayOfMonth()
-                        &&  purpose.getStatus()== Status.PROCESS)
+                if (notification.getTime().getHour()==LocalDateTime.now().getHour()
+                        &&  notification.getTime().getMinute()==LocalDateTime.now().getMinute()
+                        &&  notification.getTime().getDayOfMonth()==LocalDateTime.now().getDayOfMonth()
+                        &&  notification.getStatus()== Status.PROCESS)
                 {
                     RestTemplate restTemplate = new RestTemplate();
-                    PurposeRequest purposeRequest=new PurposeRequest(purpose.getPurpose(),purpose.getStatus(),purpose.getTime());
-                    restTemplate.postForObject(url + person.getVkid(),purposeRequest,String.class);
+                    PostNotificationRequest postNotificationRequest=new PostNotificationRequest(notification.getNotification(),notification.getStatus(),notification.getTime());
+                    restTemplate.postForObject(url + person.getVkid(),postNotificationRequest,String.class);
 
 
 

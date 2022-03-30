@@ -20,7 +20,6 @@ public class InvalidErrorResponse
     public static class InvalidError
     {
         String name;
-        //InvalidErrorCode invalidErrorCode;
         String message;
 
     }

@@ -1,10 +1,10 @@
 package com.example.demojpa.controller;
 
 import com.example.demojpa.aop.Loggable;
+import com.example.demojpa.entity.Notification;
 import com.example.demojpa.entity.Person;
-import com.example.demojpa.entity.Purpose;
 import com.example.demojpa.exception.BusinessException;
-import com.example.demojpa.request.PersonRequest;
+import com.example.demojpa.request.PostPersonRequest;
 import com.example.demojpa.service.PersonService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class PersonController {
 
     @Loggable
     @PostMapping("/create")
-    public ResponseEntity<?> create(@Valid @RequestBody PersonRequest p) throws BusinessException
+    public ResponseEntity<?> create(@Valid @RequestBody PostPersonRequest p) throws BusinessException
     {
 
         log.info("Create person");
@@ -36,31 +36,31 @@ public class PersonController {
     }
 
     @Loggable
-    @GetMapping("/purposeAll/{vkid}")
-    public  ResponseEntity<List<Purpose>> getByPersonVKIdPurposes(@PathVariable Integer vkid) throws BusinessException {
-        log.info("All Purpose vkid");
+    @GetMapping("/allNotification/{vkid}")
+    public  ResponseEntity<List<Notification>> getByPersonVKIdNotification(@PathVariable Integer vkid) throws BusinessException {
+        log.info("All Notification by vkid");
         return ResponseEntity.ok(personService.getByPersonVKIdPurpose(vkid));
     }
 
 
 
     @Loggable
-    @GetMapping("/{vkid}")
-    public ResponseEntity<Person> get(@PathVariable Integer vkid)throws BusinessException
+    @GetMapping("/getPerson/{vkid}")
+    public ResponseEntity<Person> getPerson(@PathVariable Integer vkid)throws BusinessException
     {
-        log.info("Find by vkid");
+        log.info("Person find by vkid");
         return ResponseEntity.ok(personService.get(vkid));
     }
 
-    @GetMapping("/")
-    public ResponseEntity<List<Person>> all()
+    @GetMapping("/allPerson")
+    public ResponseEntity<List<Person>> allPerson()
     {
         log.info("All person");
         return ResponseEntity.ok(personService.all());
     }
 
     @DeleteMapping("/delete1/{id}")
-    public ResponseEntity<?> deleteid(@PathVariable Long id) throws BusinessException
+    public ResponseEntity<?> deletePersonById(@PathVariable Long id) throws BusinessException
     {
         log.info("Delete person");
         personService.deleteId(id);
@@ -70,7 +70,7 @@ public class PersonController {
 
     @Loggable
     @DeleteMapping("/delete2/{vkid}")
-    public ResponseEntity<?> deletevkid(@PathVariable Integer vkid) throws BusinessException
+    public ResponseEntity<?> deletePersonByVkId(@PathVariable Integer vkid) throws BusinessException
     {
         log.info("Delete person");
         personService.deleteVkId(vkid);

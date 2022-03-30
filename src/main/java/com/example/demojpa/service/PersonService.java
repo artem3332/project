@@ -1,12 +1,12 @@
 package com.example.demojpa.service;
 
+import com.example.demojpa.entity.Notification;
 import com.example.demojpa.entity.Person;
-import com.example.demojpa.entity.Purpose;
 import com.example.demojpa.entity.Status;
 import com.example.demojpa.exception.BusinessException;
 import com.example.demojpa.exception.ErrorCode;
 import com.example.demojpa.repository.PersonRepository;
-import com.example.demojpa.request.PersonRequest;
+import com.example.demojpa.request.PostPersonRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
@@ -26,11 +26,11 @@ public class PersonService {
     private EncryptedService encryptedService;
 
     @Autowired
-    private PurposeService purposeService;
+    private NotificationService notificationService;
 
 
 
-    public void create(PersonRequest request) throws BusinessException {
+    public void create(PostPersonRequest request) throws BusinessException {
 
         if (personRepository.findPerson(request.getLogin()).isPresent()) {
             throw new BusinessException(ErrorCode.PERSON_ALREADY_EXISTS, HttpStatus.BAD_REQUEST);
@@ -55,10 +55,10 @@ public class PersonService {
     }
 
 
-    public List<Purpose> getByPersonVKIdPurpose(Integer vkid) throws BusinessException {
+    public List<Notification> getByPersonVKIdPurpose(Integer vkid) throws BusinessException {
         return personRepository.findPersonByVkid(vkid)
                 .orElseThrow(() -> new BusinessException(ErrorCode.PERSON_NOT_FOUND, HttpStatus.NOT_FOUND))
-                .getPurposes().stream().filter(n-> n.getStatus()==Status.PROCESS).toList();
+                .getNotifications().stream().filter(n-> n.getStatus()==Status.PROCESS).toList();
     }
 
 
@@ -81,7 +81,7 @@ public class PersonService {
     public void deleteVkId(Integer vkid) throws BusinessException {
         personRepository.findPersonByVkid(vkid)
                 .ifPresentOrElse(p -> {
-                    purposeService.deleteByUserId(p.getId());
+                    notificationService.deleteNotificationByUserId(p.getId());
                     personRepository.deleteById(p.getId());
                 }, () -> {
                     throw new BusinessException(ErrorCode.PERSON_NOT_FOUND, HttpStatus.NOT_FOUND);

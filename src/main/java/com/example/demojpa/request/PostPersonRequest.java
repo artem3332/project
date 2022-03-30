@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.validation.constraints.Email;
 
 @Data
-public class PersonRequest
+public class PostPersonRequest
 {
 
     private final String login;

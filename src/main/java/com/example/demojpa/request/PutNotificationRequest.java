@@ -3,7 +3,7 @@ package com.example.demojpa.request;
 import lombok.Data;
 
 @Data
-public class ChangePurposeRequest
+public class PutNotificationRequest
 {
-    private String purpose;
+    private String notification;
 }

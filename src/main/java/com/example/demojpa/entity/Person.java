@@ -15,7 +15,6 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-
     private String login;
     private String password;
 
@@ -23,11 +22,9 @@ public class Person {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    private List<Purpose> purposes;
+    private List<Notification> notifications;
 
     private String email;
-
-
 
     public Person(String login, String parol,String email,Integer vkid)
     {

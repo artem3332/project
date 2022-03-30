@@ -10,26 +10,21 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
-public class Purpose
+public class Notification
 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String purpose;
+    private String notification;
 
     @Column(name = "user_id")
     private Long userId;
 
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "purpose_id")
-    private List<Comment> comments;
-
-    @OrderBy("status, importance ASC") // sort by status and importance ASC
+    @OrderBy("status, importance ASC")
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "parent_id")
-    private List<Purpose> subGoals;
+    private List<Notification> subGoals;
 
     @Enumerated(EnumType.ORDINAL)
     private Status status;
@@ -40,10 +35,10 @@ public class Purpose
 
     private String email;
 
-    public Purpose(String Purpose,Status status,LocalDateTime time)
+    public Notification(String notification,Status status,LocalDateTime time)
     {
 
-        this.purpose = Purpose;
+        this.notification = notification;
         this.status=status;
         this.time=time;
     }

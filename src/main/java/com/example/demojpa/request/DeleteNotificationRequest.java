@@ -3,8 +3,8 @@ package com.example.demojpa.request;
 import lombok.Data;
 
 @Data
-public class DeletePurposeRequest {
+public class DeleteNotificationRequest {
 
-    private final String purpose;
+    private final String notification;
     private final Long userId;
 }
