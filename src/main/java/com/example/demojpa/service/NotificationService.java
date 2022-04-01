@@ -34,7 +34,7 @@ public class NotificationService {
 
 
 
-    public void creatBotNotification(PostNotificationRequest postNotificationRequest, Integer vkid) throws BusinessException {
+    public void createBotNotification(PostNotificationRequest postNotificationRequest, Integer vkid) throws BusinessException {
         if(notificationRepository.findNotification(postNotificationRequest.getNotification(),personRepository.findPersonByVkid(vkid).get().getId()).isPresent())
         {
             throw new BusinessException(ErrorCode.PURPOSE_ALREADY_EXISTS, HttpStatus.BAD_REQUEST);
@@ -57,7 +57,7 @@ public class NotificationService {
     }
 
 
-    public void creatNotification(PostNotificationRequest postNotificationRequest, Long userid) throws BusinessException
+    public void createNotification(PostNotificationRequest postNotificationRequest, Long userid) throws BusinessException
     {
         if(notificationRepository.findNotification(postNotificationRequest.getNotification(),userid).isPresent())
         {
@@ -95,9 +95,9 @@ public class NotificationService {
     }
 
     @Transactional
-    public void deletePurposeByName(DeleteNotificationRequest deletePurposeRequest) {
-        personRepository.findPersonByVkid(deletePurposeRequest.getUserId().intValue())
-                .ifPresent(p -> notificationRepository.deleteNotificationByName(deletePurposeRequest.getNotification(), p.getId()));
+    public void deleteNotificationByName(DeleteNotificationRequest deleteNotificationRequest) {
+        personRepository.findPersonByVkid(deleteNotificationRequest.getUserId().intValue())
+                .ifPresent(p -> notificationRepository.deleteNotificationByName(deleteNotificationRequest.getNotification(), p.getId()));
     }
 
     @Transactional
@@ -127,19 +127,19 @@ public class NotificationService {
         if(optional.isPresent())
         {
 
-            Notification mainPurpose = optional.get();
-            boolean match = mainPurpose.getSubGoals().stream().anyMatch(subGoal -> subGoal.getNotification().equals(n.getNotification()));
+            Notification notification1 = optional.get();
+            boolean match = notification1.getSubGoals().stream().anyMatch(subGoal -> subGoal.getNotification().equals(n.getNotification()));
             if (match)
             {
                 throw  new BusinessException(ErrorCode.SUBGOAL_ALREADY_EXISTS,HttpStatus.BAD_REQUEST);
             }
 
-            Notification subPurpose = new Notification(n.getNotification(),n.getStatus(),n.getTime());
-            subPurpose.setTime(LocalDateTime.now());
-            subPurpose.setEmail(mainPurpose.getEmail());
-            subPurpose.setStatus(Status.PROCESS);
-            mainPurpose.getSubGoals().add(subPurpose);
-            notificationRepository.save(mainPurpose);
+            Notification notification = new Notification(n.getNotification(),n.getStatus(),n.getTime());
+            notification.setTime(LocalDateTime.now());
+            notification.setEmail(notification1.getEmail());
+            notification.setStatus(Status.PROCESS);
+            notification1.getSubGoals().add(notification);
+            notificationRepository.save(notification1);
         }
 
         else
@@ -152,9 +152,9 @@ public class NotificationService {
     {
         if(notificationRepository.existsById(id))
         {
-            Notification purpose = notificationRepository.getById(id);
-            purpose.setStatus(Status.COMPLETED);
-            notificationRepository.save(purpose);
+            Notification notification = notificationRepository.getById(id);
+            notification.setStatus(Status.COMPLETED);
+            notificationRepository.save(notification);
         }
         else
         {

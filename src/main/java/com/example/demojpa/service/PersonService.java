@@ -7,6 +7,8 @@ import com.example.demojpa.exception.BusinessException;
 import com.example.demojpa.exception.ErrorCode;
 import com.example.demojpa.repository.PersonRepository;
 import com.example.demojpa.request.PostPersonRequest;
+import com.example.demojpa.service.EncryptedService;
+import com.example.demojpa.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
@@ -30,32 +32,34 @@ public class PersonService {
 
 
 
-    public void create(PostPersonRequest request) throws BusinessException {
 
-        if (personRepository.findPerson(request.getLogin()).isPresent()) {
+    public boolean createPerson(PostPersonRequest postPersonRequest) throws BusinessException {
+
+        if (personRepository.findPerson(postPersonRequest.getLogin()).isPresent()) {
             throw new BusinessException(ErrorCode.PERSON_ALREADY_EXISTS, HttpStatus.BAD_REQUEST);
         }
         Person per;
 
-        if(request.getPassword()!=null) {
-             per = new Person(request.getLogin(), encryptedService.encrypted(request.getPassword()), request.getEmail(), request.getVkid());
+        if(postPersonRequest.getPassword()!=null) {
+             per = new Person(postPersonRequest.getLogin(), encryptedService.encrypted(postPersonRequest.getPassword()), postPersonRequest.getEmail(), postPersonRequest.getVkid());
         }
         else{
-             per = new Person(request.getLogin(),null, request.getEmail(), request.getVkid());
+             per = new Person(postPersonRequest.getLogin(),null, postPersonRequest.getEmail(), postPersonRequest.getVkid());
 
         }
         personRepository.save(per);
+        return true;
     }
 
 
 
 
-    public Person get(Integer vkid) throws BusinessException {
+    public Person getPersonByVkId(Integer vkid) throws BusinessException {
         return personRepository.findPersonByVkid(vkid).orElseThrow(() -> new BusinessException(ErrorCode.PERSON_NOT_FOUND, HttpStatus.NOT_FOUND));
     }
 
 
-    public List<Notification> getByPersonVKIdPurpose(Integer vkid) throws BusinessException {
+    public List<Notification> getByPersonVKIdNotification(Integer vkid) throws BusinessException {
         return personRepository.findPersonByVkid(vkid)
                 .orElseThrow(() -> new BusinessException(ErrorCode.PERSON_NOT_FOUND, HttpStatus.NOT_FOUND))
                 .getNotifications().stream().filter(n-> n.getStatus()==Status.PROCESS).toList();
@@ -63,22 +67,23 @@ public class PersonService {
 
 
 
-    public List<Person> all() {
+    public List<Person> allPerson() {
         return personRepository.findAll();
     }
 
-    public void deleteId(Long id) throws BusinessException {
+    public boolean deletePersonById(Long id) throws BusinessException {
 
         if (personRepository.existsById(id)) {
             personRepository.deleteById(id);
         } else {
             throw new BusinessException(ErrorCode.PERSON_NOT_FOUND, HttpStatus.NOT_FOUND);
         }
+        return true;
 
     }
 
     @Transactional
-    public void deleteVkId(Integer vkid) throws BusinessException {
+    public boolean deletePersonByVkId(Integer vkid) throws BusinessException {
         personRepository.findPersonByVkid(vkid)
                 .ifPresentOrElse(p -> {
                     notificationService.deleteNotificationByUserId(p.getId());
@@ -86,6 +91,7 @@ public class PersonService {
                 }, () -> {
                     throw new BusinessException(ErrorCode.PERSON_NOT_FOUND, HttpStatus.NOT_FOUND);
                 });
+        return true;
     }
 
 

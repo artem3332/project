@@ -31,7 +31,7 @@ public class PersonController {
     {
 
         log.info("Create person");
-        personService.create(p);
+        personService.createPerson(p);
         return ResponseEntity.ok("Пользователь успешно создан!");
     }
 
@@ -39,7 +39,7 @@ public class PersonController {
     @GetMapping("/allNotification/{vkid}")
     public  ResponseEntity<List<Notification>> getByPersonVKIdNotification(@PathVariable Integer vkid) throws BusinessException {
         log.info("All Notification by vkid");
-        return ResponseEntity.ok(personService.getByPersonVKIdPurpose(vkid));
+        return ResponseEntity.ok(personService.getByPersonVKIdNotification(vkid));
     }
 
 
@@ -49,21 +49,21 @@ public class PersonController {
     public ResponseEntity<Person> getPerson(@PathVariable Integer vkid)throws BusinessException
     {
         log.info("Person find by vkid");
-        return ResponseEntity.ok(personService.get(vkid));
+        return ResponseEntity.ok(personService.getPersonByVkId(vkid));
     }
 
     @GetMapping("/allPerson")
     public ResponseEntity<List<Person>> allPerson()
     {
         log.info("All person");
-        return ResponseEntity.ok(personService.all());
+        return ResponseEntity.ok(personService.allPerson());
     }
 
     @DeleteMapping("/delete1/{id}")
     public ResponseEntity<?> deletePersonById(@PathVariable Long id) throws BusinessException
     {
         log.info("Delete person");
-        personService.deleteId(id);
+        personService.deletePersonById(id);
         return ResponseEntity.ok("Пользователь успешно удалён!");
     }
 
@@ -73,7 +73,7 @@ public class PersonController {
     public ResponseEntity<?> deletePersonByVkId(@PathVariable Integer vkid) throws BusinessException
     {
         log.info("Delete person");
-        personService.deleteVkId(vkid);
+        personService.deletePersonByVkId(vkid);
         return ResponseEntity.ok("Пользователь успешно удалён!");
     }
 

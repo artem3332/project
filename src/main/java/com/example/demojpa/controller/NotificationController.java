@@ -38,7 +38,7 @@ public class NotificationController {
     public ResponseEntity<?> createNotificationBot(@RequestBody PostNotificationRequest postNotificationRequest, @PathVariable Integer vkid) throws BusinessException
     {
         log.info("Create bot Notification");
-        notificationService.creatBotNotification(postNotificationRequest,vkid);
+        notificationService.createBotNotification(postNotificationRequest,vkid);
         return ResponseEntity.ok("Цель успешно создана!");
     }
 
@@ -47,9 +47,9 @@ public class NotificationController {
     public ResponseEntity<?> createNotification(@RequestBody PostNotificationRequest postNotificationRequest, @PathVariable Long userid) throws BusinessException
     {
         log.info("Create notification");
-        notificationService.creatNotification(postNotificationRequest, userid);
+        notificationService.createNotification(postNotificationRequest, userid);
         defaultEmailService.sendSimpleEmail(personRepository.getById(userid).getEmail(),
-                "Purpose", "Цель успешно "+postNotificationRequest.getNotification()
+                "Notification", "Цель успешно "+postNotificationRequest.getNotification()
                         + " поставлена," + "на её выполнение вам"+2 +"дня");
 
         return ResponseEntity.ok("Цель успешно создана!");
@@ -81,8 +81,8 @@ public class NotificationController {
     @DeleteMapping("/deleteNotification")
     public ResponseEntity<?> deleteNotificationByName(@RequestBody @Valid DeleteNotificationRequest deleteNotificationRequest)
     {
-        log.info("Delete n  otification");
-        notificationService.deletePurposeByName(deleteNotificationRequest);
+        log.info("Delete notification");
+        notificationService.deleteNotificationByName(deleteNotificationRequest);
         return ResponseEntity.ok("Цель успешно удалена!");
     }
 
