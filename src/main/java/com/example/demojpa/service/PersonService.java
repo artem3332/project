@@ -7,11 +7,9 @@ import com.example.demojpa.exception.BusinessException;
 import com.example.demojpa.exception.ErrorCode;
 import com.example.demojpa.repository.PersonRepository;
 import com.example.demojpa.request.PostPersonRequest;
-import com.example.demojpa.service.EncryptedService;
-import com.example.demojpa.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +28,9 @@ public class PersonService {
     @Autowired
     private NotificationService notificationService;
 
+    @Autowired
+    private PasswordEncoder bCryptPasswordEncoder;
+
 
 
 
@@ -41,12 +42,18 @@ public class PersonService {
         Person per;
 
         if(postPersonRequest.getPassword()!=null) {
-             per = new Person(postPersonRequest.getLogin(), encryptedService.encrypted(postPersonRequest.getPassword()), postPersonRequest.getEmail(), postPersonRequest.getVkid());
+             per = new Person(postPersonRequest.getLogin(), bCryptPasswordEncoder.
+                     encode(postPersonRequest.getPassword()), postPersonRequest.getEmail(), postPersonRequest.getVkid());
         }
         else{
-             per = new Person(postPersonRequest.getLogin(),null, postPersonRequest.getEmail(), postPersonRequest.getVkid());
+             per = new Person(postPersonRequest.getLogin(),bCryptPasswordEncoder.
+                     encode(postPersonRequest.getLogin()+postPersonRequest.hashCode()), postPersonRequest.getEmail(), postPersonRequest.getVkid());
 
         }
+
+
+
+
         personRepository.save(per);
         return true;
     }
