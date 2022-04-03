@@ -5,7 +5,6 @@ import com.example.demojpa.entity.Person;
 import com.example.demojpa.exception.BusinessException;
 import com.example.demojpa.repository.PersonRepository;
 import com.example.demojpa.request.PostPersonRequest;
-import com.example.demojpa.service.EncryptedService;
 import com.example.demojpa.service.PersonService;
 import org.junit.Assert;
 import org.junit.Test;

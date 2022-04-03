@@ -23,9 +23,6 @@ public class PersonService {
     private PersonRepository personRepository;
 
     @Autowired
-    private EncryptedService encryptedService;
-
-    @Autowired
     private NotificationService notificationService;
 
     @Autowired
